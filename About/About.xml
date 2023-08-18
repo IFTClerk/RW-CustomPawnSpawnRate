@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>World Pawn Spawn Rates</name>
+  <author>IFTClerk</author>
+  <packageId>IFTClerk.WorldPawnSpawnRates</packageId>
+  <url></url>
+  <supportedVersions>
+    <li>1.4</li>
+  </supportedVersions>
+  <description> 
+	A mod that patches the world pawn spawn rates in Rimworld by forcing a minimum probability of spawns.
+</description>
+  <modDependencies>
+	<li>
+	  <packageId>brrainz.harmony</packageId>
+	  <displayName>Harmony</displayName>
+	  <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+	</li>
+</modDependencies>
+  <loadAfter>
+    <li>net.pardeike.rimworld.mod.harmony</li>
+  </loadAfter>
+</ModMetaData>
