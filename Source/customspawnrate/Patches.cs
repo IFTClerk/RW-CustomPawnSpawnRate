@@ -28,6 +28,13 @@ namespace CustomPawnSpawnRate
         {
             __result = Mathf.Max(SpawnRateSettings.minSpawnRate, __result);
         }
+        public static void PatchSelectionWeight(ref float __result, Pawn p)
+        {
+            if (p.Ideo == Find.FactionManager.OfPlayer.ideos.PrimaryIdeo)
+            {
+                __result = 0.0f;
+            }
+        }
         public static void PatchWorldPawnGC(ref string __result, Pawn pawn)
         {
             if (_IsCustomPawn(pawn))
@@ -44,27 +51,28 @@ namespace CustomPawnSpawnRate
             }
 
             IEnumerable<Pawn> customPawns = Find.WorldPawns.GetPawnsBySituation(WorldPawnSituation.Free).Where((Pawn p) => _IsCustomPawn(p));
-            bool oldParam = request.WorldPawnFactionDoesntMatter;
-            request.WorldPawnFactionDoesntMatter = true;
-            IEnumerable<Pawn> freePawns = customPawns.Where((Pawn p) => (bool)validPawn.Invoke(null, new object[] { p, request }));
+            // Somehow this makes a clone??
+            PawnGenerationRequest newReq = request;
+            // Modify the request for custom pawns
+            newReq.WorldPawnFactionDoesntMatter = true;
+            newReq.FixedIdeo = Find.FactionManager.OfPlayer.ideos.PrimaryIdeo;
+            IEnumerable<Pawn> freePawns = customPawns.Where((Pawn p) => (bool)validPawn.Invoke(null, new object[] { p, newReq }));
             if (Rand.Chance(SpawnRateSettings.probSpawnRate) && freePawns.TryRandomElementByWeight((Pawn x) => 1.0f, out Pawn pawn))
             {
                 // Debug
                 //Log.Message("[WP]Got world pawn, redressing.");
 
-                Verse.PawnGenerator.RedressPawn(pawn, request);
+                Verse.PawnGenerator.RedressPawn(pawn, newReq);
                 Find.WorldPawns.RemovePawn(pawn);
 
-                pawn.Ideo?.Notify_MemberGenerated(pawn, request.AllowedDevelopmentalStages.Newborn());
-                Find.Scenario?.Notify_PawnGenerated(pawn, request.Context, true);
+                pawn.Ideo?.Notify_MemberGenerated(pawn, newReq.AllowedDevelopmentalStages.Newborn());
+                Find.Scenario?.Notify_PawnGenerated(pawn, newReq.Context, true);
 
                 __result = pawn;
-                request.WorldPawnFactionDoesntMatter = oldParam;
                 return false;
             }
             // Debug
             //Log.Message("[WP]Did not get pawn, proceeding to original method.");
-            request.WorldPawnFactionDoesntMatter = oldParam;
             return true;
         }
 
