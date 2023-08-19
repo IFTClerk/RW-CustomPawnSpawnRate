@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-  <name>World Pawn Spawn Rates</name>
+  <name>Custom Pawn Spawn Rates</name>
   <author>IFTClerk</author>
-  <packageId>IFTClerk.WorldPawnSpawnRates</packageId>
+  <packageId>IFTClerk.CustomPawnSpawnRates</packageId>
   <url></url>
   <supportedVersions>
     <li>1.4</li>
   </supportedVersions>
   <description> 
-	A mod that patches the world pawn spawn rates in Rimworld by forcing a minimum probability of spawns and equalising the weight with which they spawn.
+	A mod that patches the custom pawn spawn rates and hopefully doesn't break anything. No guarantees.
 </description>
   <modDependencies>
 	<li>
