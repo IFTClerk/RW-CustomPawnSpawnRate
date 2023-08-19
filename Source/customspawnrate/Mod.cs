@@ -17,6 +17,8 @@ namespace CustomPawnSpawnRate
             Harmony harmony = new Harmony("iftclerk.wpspawnrate");
             harmony.Patch(AccessTools.Method(typeof(Verse.PawnGenerator), "ChanceToRedressAnyWorldPawn"),
                 postfix: new HarmonyMethod(typeof(SpawnRatePatches), nameof(SpawnRatePatches.PatchSpawnRate)));
+            harmony.Patch(AccessTools.Method(typeof(Verse.PawnGenerator), "WorldPawnSelectionWeight"),
+                prefix: new HarmonyMethod(typeof(SpawnRatePatches), nameof(SpawnRatePatches.PatchSelectionWeight)));
             harmony.Patch(AccessTools.Method(typeof(RimWorld.Planet.WorldPawnGC), "GetCriticalPawnReason"),
                 postfix: new HarmonyMethod(typeof(SpawnRatePatches), nameof(SpawnRatePatches.PatchWorldPawnGC)));
             harmony.Patch(AccessTools.Method(typeof(Verse.PawnGenerator), "GenerateOrRedressPawnInternal"),
